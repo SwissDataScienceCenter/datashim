@@ -1,5 +1,3 @@
-# Helm Chart Repository
-
 # Unofficial [Datashim](https://github.com/datashim-io/datashim) Helm Chart Repository
 
 This repository checks the [Datashim project](https://github.com/datashim-io/datashim)
