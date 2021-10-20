@@ -31,12 +31,12 @@ csi-nfs-chart:
   sidecars: {} # in case you want to force override regardless of the csi-nfs-chart/values.yaml
 
 csi-s3-chart:
-# baseRepo: "anotherrepo"
+baseRepo: "renku"
 # dockerRegistrySecret: "anothersecret"
 # mounter: "goofys"
   csis3:
-    image: "csi-s3"
-    tag: "latest"
+    image: "datashim-csi-s3"
+    tag: "0.1.1.1-rc8"
   sidecars: {} # in case you want to force override regardless of the csi-s3-chart/values.yaml
 
 csi-h3-chart:
@@ -48,11 +48,11 @@ csi-h3-chart:
   sidecars: {} # in case you want to force override regardless of the csi-s3-chart/values.yaml
 
 dataset-operator-chart:
-  baseRepo: "quay.io/datashim"
+  baseRepo: "renku"
 # dockerRegistrySecret: "anothersecret"
   generatekeys:
-    image: "generate-keys"
-    tag: "latest"
+    image: "datashim-generate-keys"
+    tag: "0.1.1.1-rc8"
   datasetoperator:
-    image: "dataset-operator"
-    tag: "latest"
+    image: "datashim-dataset-operator"
+    tag: "0.1.1.1-rc8"
