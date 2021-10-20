@@ -1,19 +1,83 @@
-name: Release Chart
+name: Tagged release
 
 on:
-  create:
+  push:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+**"
 
-
 jobs:
+  build-images:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+      tag_latest: ${{ steps.tag_latest.outputs.tag_latest }}
+    strategy:
+      matrix:
+        include:
+          - context: src/generate-keys
+            file: src/generate-keys/Dockerfile.amd64
+            image: renku/datashim-generate-keys
+            network: default
+            build-args: |
+              ARCH=amd64
+          - context: src/dataset-operator
+            file: src/dataset-operator/Dockerfile
+            image: renku/datashim-dataset-operator
+            network: default
+            build-args: |
+              ARCH=amd64
+          - context: src/csi-s3
+            file: src/csi-s3/cmd/s3driver/Dockerfile.full
+            image: renku/datashim-csi-s3
+            network: host
+            build-args: |
+              ARCH=amd64
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.RENKU_DOCKER_USERNAME }}
+          password: ${{ secrets.RENKU_DOCKER_PASSWORD }}
+      - name: Get tag from ref
+        id: tag
+        run: |
+          echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
+      - name: Tag with latest
+        id: tag_latest
+        run: |
+          if [[ ${{ steps.tag.outputs.tag }} =~ ^[0-9]+.[0-9]+.[0-9]+.*[0-9]*$ ]]; then
+            echo "::set-output name=tag_latest::true" 
+          else
+            echo "::set-output name=tag_latest::false" 
+          fi
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ matrix.image }}
+          tags: |
+            type=match,pattern=^[0-9]+.[0-9]+.[0-9]+.*[0-9]*$
+            type=match,pattern=^[0-9]+.[0-9]+.[0-9]+.*[0-9]*-rc[0-9]+$
+          flavor: |
+            latest=${{ steps.tag_latest.outputs.tag_latest }}
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
   release-chart:
+    needs: build-images
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout whole repo
+      - name: Checkout repo
         uses: actions/checkout@v2
-        with:
-          repository: 'datashim-io/datashim'
       - name: Install chart releaser
         run: |
           curl -L https://github.com/helm/chart-releaser/releases/download/v1.2.1/chart-releaser_1.2.1_linux_amd64.tar.gz | tar -xz -C /usr/local/bin/
