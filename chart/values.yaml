@@ -31,7 +31,7 @@ csi-nfs-chart:
   sidecars: {} # in case you want to force override regardless of the csi-nfs-chart/values.yaml
 
 csi-s3-chart:
-baseRepo: "renku"
+  baseRepo: "renku"
 # dockerRegistrySecret: "anothersecret"
 # mounter: "goofys"
   csis3:
