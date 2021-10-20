@@ -1,19 +1,66 @@
-name: Release Chart
+name: Tagged release
 
 on:
-  create:
+  push:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+**"
 
-
 jobs:
+  build-images:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+      tag_latest: ${{ steps.tag_latest.outputs.tag_latest }}
+    strategy:
+      matrix:
+        include:
+          - make_build_target: build-csi-plugins
+            make_push_target: push-csi-plugins
+          - make_target: build-components
+            make_push_target: push-components
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.RENKU_DOCKER_USERNAME }}
+          password: ${{ secrets.RENKU_DOCKER_PASSWORD }}
+      - name: Get tag from ref
+        id: tag
+        run: |
+          echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
+      - name: Tag with latest
+        id: tag_latest
+        run: |
+          if [[ ${{ steps.tag.outputs.tag }} =~ ^[0-9]+.[0-9]+.[0-9]+.*[0-9]*$ ]]; then
+            echo "::set-output name=tag_latest::true" 
+          else
+            echo "::set-output name=tag_latest::false" 
+          fi
+      - name: Build and push images
+        env:
+          BASE_CSI_NFS_IMAGE: datashim-csi-driver-nfs
+          BASE_DATASET_OPERATOR_IMAGE: datashim-dataset-operator
+          BASE_CSI_S3_IMAGE: datashim-csi-s3
+          BASE_GENERAGE_KEYS_IMAGE: datashim-generate-keys
+          DOCKER_REGISTRY: renku
+          ARCH: amd64
+        run: |
+          cd build-tools
+          COMMON_IMAGE_TAG="${{ steps.tag.outputs.tag }}" make ${{ matrix.make_build_target }}
+          COMMON_IMAGE_TAG="${{ steps.tag.outputs.tag }}" make ${{ matrix.make_push_target }}
+          if [[ ${{ steps.tag_latest.outputs.tag_latest }} == true ]]; then
+            COMMON_IMAGE_TAG="latest" make ${{ matrix.make_build_target }}
+            COMMON_IMAGE_TAG="latest" make ${{ matrix.make_push_target }}
+          fi
+
   release-chart:
+    needs: build-images
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout whole repo
+      - name: Checkout repo
         uses: actions/checkout@v2
-        with:
-          repository: 'datashim-io/datashim'
       - name: Install chart releaser
         run: |
           curl -L https://github.com/helm/chart-releaser/releases/download/v1.2.1/chart-releaser_1.2.1_linux_amd64.tar.gz | tar -xz -C /usr/local/bin/
