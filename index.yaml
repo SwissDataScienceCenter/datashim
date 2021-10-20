@@ -2,6 +2,37 @@ apiVersion: v1
 entries:
   dlf-chart:
   - apiVersion: v2
+    appVersion: 0.1.1-rc4
+    created: "2021-10-20T15:49:21.7016091Z"
+    dependencies:
+    - condition: csi-sidecars-rbac.enabled
+      name: csi-sidecars-rbac
+      repository: ""
+      version: 0.1.0
+    - condition: csi-nfs-chart.enabled
+      name: csi-nfs-chart
+      repository: ""
+      version: 0.1.0
+    - condition: csi-s3-chart.enabled
+      name: csi-s3-chart
+      repository: ""
+      version: 0.1.1-rc4
+    - condition: csi-h3-chart.enabled
+      name: csi-h3-chart
+      repository: ""
+      version: 0.1.0
+    - condition: dataset-operator-chart.enabled
+      name: dataset-operator-chart
+      repository: ""
+      version: 0.1.1-rc4
+    description: Dataset Lifecycle Framework chart
+    digest: 088366b30f609e47373db97a5a30c6d310acdb46238900a7413872382b2cee57
+    name: dlf-chart
+    type: application
+    urls:
+    - https://github.com/SwissDataScienceCenter/datashim/releases/download/dlf-chart-0.1.1-rc4/dlf-chart-0.1.1-rc4.tgz
+    version: 0.1.1-rc4
+  - apiVersion: v2
     appVersion: 0.1.1-rc2
     created: "2021-10-20T15:20:16.292038597Z"
     dependencies:
@@ -94,4 +125,4 @@ entries:
     urls:
     - https://github.com/SwissDataScienceCenter/datashim/releases/download/dlf-chart-0.1.0/dlf-chart-0.1.0.tgz
     version: 0.1.0
-generated: "2021-10-20T15:37:27.830954844Z"
+generated: "2021-10-20T15:49:21.7016262Z"
