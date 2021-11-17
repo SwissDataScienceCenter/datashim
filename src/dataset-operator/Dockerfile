@@ -31,7 +31,7 @@ COPY . /dataset-operator
 WORKDIR /dataset-operator
 RUN go build -o /dataset-operator/build/_output/bin/dataset-operator /dataset-operator/cmd/manager
 
-FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
+FROM redhat/ubi8-minimal:8.5
 
 ENV OPERATOR=/usr/local/bin/dataset-operator \
     USER_UID=1001 \
