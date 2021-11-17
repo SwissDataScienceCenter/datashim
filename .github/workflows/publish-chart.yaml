@@ -110,4 +110,4 @@ jobs:
           cd .gh-pages
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          cr index --charts-repo https://swissdatasciencecenter.github.io/datashim/ --push --package-path ../.helm-deploy --index-path ./index.yaml --pages-branch gh-pages-chart
+          cr index --charts-repo https://swissdatasciencecenter.github.io/datashim/ --push --skip-existing --package-path ../.helm-deploy --index-path ./index.yaml --pages-branch gh-pages-chart
