@@ -2,8 +2,8 @@ apiVersion: v2
 name: dlf-chart
 description: Dataset Lifecycle Framework chart
 type: application
-version: 0.1.1-rc6
-appVersion: 0.1.1-rc6
+version: 0.1.1-rc7
+appVersion: 0.1.1-rc7
 
 dependencies:
   - name: csi-sidecars-rbac
@@ -13,11 +13,11 @@ dependencies:
     version: 0.1.0
     condition: csi-nfs-chart.enabled
   - name: csi-s3-chart
-    version: 0.1.1-rc6
+    version: 0.1.1-rc7
     condition: csi-s3-chart.enabled
   - name: csi-h3-chart
     version: 0.1.0
     condition: csi-h3-chart.enabled
   - name: dataset-operator-chart
-    version: 0.1.1-rc6
+    version: 0.1.1-rc7
     condition: dataset-operator-chart.enabled
