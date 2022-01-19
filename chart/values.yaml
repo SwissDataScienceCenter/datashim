@@ -33,7 +33,7 @@ csi-s3-chart:
 # mounter: "goofys"
   csis3:
     image: "datashim-csi-s3"
-    tag: "0.1.1-rc7"
+    tag: "0.1.1-renku-1"
   sidecars: {} # in case you want to force override regardless of the csi-s3-chart/values.yaml
 
 csi-h3-chart:
@@ -48,7 +48,7 @@ dataset-operator-chart:
 # dockerRegistrySecret: "anothersecret"
   generatekeys:
     image: "datashim-generate-keys"
-    tag: "0.1.1-rc7"
+    tag: "0.1.1-renku-1"
   datasetoperator:
     image: "datashim-dataset-operator"
-    tag: "0.1.1-rc7"
+    tag: "0.1.1-renku-1"
