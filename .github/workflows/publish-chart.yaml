@@ -60,6 +60,7 @@ jobs:
           tags: |
             type=match,pattern=^[0-9]+\.[0-9]+\.[0-9]+$
             type=match,pattern=^[0-9]+\.[0-9]+\.[0-9]+-rc[0-9]+$
+            type=match,pattern=^[0-9]+\.[0-9]+\.[0-9]+-renku-[0-9]+$
           flavor: |
             latest=${{ steps.tag_latest.outputs.tag_latest }}
             suffix=-amd64,onlatest=true
