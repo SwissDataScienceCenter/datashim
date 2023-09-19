@@ -63,6 +63,37 @@ entries:
     - https://github.com/SwissDataScienceCenter/datashim/releases/download/dlf-chart-0.3.0-renku-1/dlf-chart-0.3.0-renku-1.tgz
     version: 0.3.0-renku-1
   - apiVersion: v2
+    appVersion: 0.3.0-renku-1
+    created: "2023-09-19T14:50:37.93986865Z"
+    dependencies:
+    - condition: csi-sidecars-rbac.enabled
+      name: csi-sidecars-rbac
+      repository: ""
+      version: 0.1.0
+    - condition: csi-nfs-chart.enabled
+      name: csi-nfs-chart
+      repository: ""
+      version: 0.1.0
+    - condition: csi-s3-chart.enabled
+      name: csi-s3-chart
+      repository: ""
+      version: 0.3.0-renku-1
+    - condition: csi-h3-chart.enabled
+      name: csi-h3-chart
+      repository: ""
+      version: 0.1.0
+    - condition: dataset-operator-chart.enabled
+      name: dataset-operator-chart
+      repository: ""
+      version: 0.3.0-renku-1
+    description: Dataset Lifecycle Framework chart
+    digest: 3185819c8b8e019f0f5164cdba301266a85daf4e3ef8458ff10f55596e1cd823
+    name: dlf-chart
+    type: application
+    urls:
+    - https://github.com/SwissDataScienceCenter/datashim/releases/download/dlf-chart-0.3.0-renku-1/dlf-chart-0.3.0-renku-1.tgz
+    version: 0.3.0-renku-1
+  - apiVersion: v2
     appVersion: 0.1.1-renku-1
     created: "2022-01-19T16:38:43.39054316Z"
     dependencies:
@@ -310,4 +341,4 @@ entries:
     urls:
     - https://github.com/SwissDataScienceCenter/datashim/releases/download/dlf-chart-0.1.0/dlf-chart-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-19T13:44:58.681869241Z"
+generated: "2023-09-19T14:50:37.93993895Z"
