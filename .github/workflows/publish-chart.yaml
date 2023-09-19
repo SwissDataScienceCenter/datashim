@@ -15,7 +15,7 @@ jobs:
       matrix:
         include:
           - context: src/generate-keys
-            file: src/generate-keys/Dockerfile.amd64
+            file: src/generate-keys/Dockerfile
             image: renku/datashim-generate-keys
             network: default
             build-args: |
